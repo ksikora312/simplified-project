@@ -2,7 +2,7 @@ package pl.zajecia.client;
 
 public class Address {
 
-    private String city;
+    private String cityA;
     private String street;
     private int houseNumber;
     private int flatNumber;
