@@ -1,4 +1,4 @@
-package pl.zajecia.client;
+package pl.zajecia.model;
 
 public enum AddressType {
     PRIMARY,
