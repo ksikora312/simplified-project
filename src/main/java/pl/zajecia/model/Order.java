@@ -16,15 +16,20 @@ public class Order {
     private Instant orderDate;
     private OrderStatus status;
 
-    public Order() {this.id = UUID.randomUUID().toString();}
+    public Order() {
+        this.id = UUID.randomUUID().toString();
+    }
 
     @Override
     public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
         if (object instanceof Order) {
             Order orderToCompare = (Order) object;
             return orderToCompare.getId().equals(this.getId());
         }
-        return false
+        return false;
     }
 
 }

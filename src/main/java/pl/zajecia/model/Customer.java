@@ -3,6 +3,7 @@ package pl.zajecia.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -16,11 +17,19 @@ public class Customer {
     private List<Address> customerAddresses;
     private List<Order> orders;
 
-    public Customer() {this.id = UUID.randomUUID().toString();}
+    public Customer() {
+        this.id = UUID.randomUUID().toString();
+        this.customerAddresses = new ArrayList<>();
+        this.orders = new ArrayList<>();
+    }
+
+    public void addAddress(Address address) {
+        this.customerAddresses.add(address);
+    }
 
     @Override
     public boolean equals(Object object) {
-        if (this == (Customer) object) {
+        if (this == object) {
             return true;
         }
         if (object instanceof Customer) {
