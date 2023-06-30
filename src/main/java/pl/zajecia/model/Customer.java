@@ -17,11 +17,15 @@ public class Customer {
     private List<Address> customerAddresses;
     private List<Order> orders;
 
-    public Customer(String name) {
+    public Customer() {
         this.id = UUID.randomUUID().toString();
-        this.name = name;
         this.customerAddresses = new ArrayList<>();
         this.orders = new ArrayList<>();
+    }
+
+    public Customer(String name) {
+        this();
+        this.name = name;
     }
 
     public void addAddress(Address address) {

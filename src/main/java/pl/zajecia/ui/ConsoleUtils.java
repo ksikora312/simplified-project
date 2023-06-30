@@ -24,6 +24,10 @@ public class ConsoleUtils {
     }
 
     public static double getDoubleInput(Scanner scanner, double minimum) {
+       return getDoubleInput(scanner, minimum, Double.MAX_VALUE);
+    }
+
+    public static double getDoubleInput(Scanner scanner, double minimum, double maximum) {
         double input = 0.0;
         boolean hasEnteredCorrectNumber = false;
         while (!hasEnteredCorrectNumber) {
@@ -32,25 +36,11 @@ public class ConsoleUtils {
                 scanner.next();
             } else {
                 input = scanner.nextDouble();
-                if(input <= minimum) {
+                if (input < minimum || input > maximum) {
                     System.out.println("Nieprawidlowa liczba!");
-                } else{
+                } else {
                     hasEnteredCorrectNumber = true;
                 }
-            }
-        }
-        return input;
-    }
-    public static String getStringInput (Scanner scanner) {
-        String input = "";
-        boolean hasEnteredCorrectString = false;
-        while (!hasEnteredCorrectString) {
-            if (!scanner.hasNextLine()) {
-                System.out.println("Nie wprowadzono wartosci! Sprobuj ponownie");
-                scanner.next();
-            } else {
-                input = scanner.next();
-                hasEnteredCorrectString = true;
             }
         }
         return input;

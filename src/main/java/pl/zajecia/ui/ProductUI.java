@@ -38,9 +38,7 @@ public class ProductUI {
                 break;
             case 4:
                 break;
-            case 5:
-                MainUI mainUI = new MainUI();
-                mainUI.showMenu();
+            default:
                 break;
         }
     }
@@ -50,7 +48,7 @@ public class ProductUI {
         System.out.println("2) Zmien cene produktu, aktualna cena wynosi : " + product.getPrice());
         System.out.println("3) Wroc do menu produktow");
 
-        int choice = ConsoleUtils.getIntInput(scanner, 1,3,);
+        int choice = ConsoleUtils.getIntInput(scanner, 1, 3);
 
         switch (choice) {
             case 1:
@@ -61,7 +59,7 @@ public class ProductUI {
                 break;
             case 2:
                 System.out.println("Podaj nowa cene");
-                double productPrice = scanner.next();
+                double productPrice = ConsoleUtils.getDoubleInput(scanner, 0.01);
                 product.setPrice(productPrice);
                 showEditMenu(product);
                 break;
@@ -81,13 +79,10 @@ public class ProductUI {
 
     private void addProduct() {
         System.out.print("Podaj nazwe produktu: ");
-        // String productName = scanner.next();
+        String productName = scanner.next();
 
-        String productName = ConsoleUtils.getStringInput(scanner);
-        // TODO: logika do sprawdzania poprawnosci - do klasy ConsoleUtils wrzucic
         System.out.print("Podaj cene produktu: ");
-
-        double price = ConsoleUtils.getDoubleInput(scanner,0.0);
+        double price = ConsoleUtils.getDoubleInput(scanner, 0.0);
 
         Product newProduct = new Product(productName, price);
         productRepository.save(newProduct);
@@ -97,9 +92,9 @@ public class ProductUI {
         System.out.print("Podaj id produktu: ");
         String productId = scanner.next();
         Optional<Product> productOptional = productRepository.getById(productId);
-        if(productOptional.isPresent()) {
+        if (productOptional.isPresent()) {
             // TODO: logika update
-            Product productToUpdate = (Product) productOptional;
+            Product productToUpdate = productOptional.get();
             showEditMenu(productToUpdate);
         } else {
             System.err.println("Nie istnieje produkt o takim id!");
