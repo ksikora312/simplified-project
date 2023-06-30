@@ -23,6 +23,13 @@ public class Address {
         this.id = UUID.randomUUID().toString();
     }
 
+    public Address(String city, String street, int houseNumber) {
+        this.id = UUID.randomUUID().toString();
+        this.city = city;
+        this.street = street;
+        this.houseNumber = houseNumber;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (object instanceof Address) {

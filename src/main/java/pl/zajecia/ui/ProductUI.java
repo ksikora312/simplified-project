@@ -22,8 +22,9 @@ public class ProductUI {
         System.out.println("2) Dodaj produkt");
         System.out.println("3) Edytuj produkt");
         System.out.println("4) Usun produkt");
+        System.out.println("5) Wroc");
 
-        int choice = ConsoleUtils.getIntInput(scanner, 1, 4);
+        int choice = ConsoleUtils.getIntInput(scanner, 1, 5);
 
         switch (choice) {
             case 1:
@@ -35,6 +36,38 @@ public class ProductUI {
             case 3:
                 editProduct();
                 break;
+            case 4:
+                break;
+            case 5:
+                MainUI mainUI = new MainUI();
+                mainUI.showMenu();
+                break;
+        }
+    }
+
+    private void showEditMenu(Product product) {
+        System.out.println("1) Zmien nazwe produktu, aktualna nazwa to : " + product.getName());
+        System.out.println("2) Zmien cene produktu, aktualna cena wynosi : " + product.getPrice());
+        System.out.println("3) Wroc do menu produktow");
+
+        int choice = ConsoleUtils.getIntInput(scanner, 1,3,);
+
+        switch (choice) {
+            case 1:
+                System.out.println("Podaj nowa nazwe");
+                String productName = scanner.next();
+                product.setName(productName);
+                showEditMenu(product);
+                break;
+            case 2:
+                System.out.println("Podaj nowa cene");
+                double productPrice = scanner.next();
+                product.setPrice(productPrice);
+                showEditMenu(product);
+                break;
+            case 3:
+                showMenu();
+                break;
         }
 
     }
@@ -42,16 +75,19 @@ public class ProductUI {
     private void showAllProducts() {
         List<Product> allProducts = productRepository.getAllProducts();
         for (Product product : allProducts) {
-            System.out.println("Id: " + product.getId() + ", name: " + product.getName() + ", price: " + product.getPrice());
+            System.out.println("Product Id: " + product.getId() + ", Product name: " + product.getName() + ", price: " + product.getPrice());
         }
     }
 
     private void addProduct() {
         System.out.print("Podaj nazwe produktu: ");
-        String productName = scanner.next();
+        // String productName = scanner.next();
+
+        String productName = ConsoleUtils.getStringInput(scanner);
         // TODO: logika do sprawdzania poprawnosci - do klasy ConsoleUtils wrzucic
         System.out.print("Podaj cene produktu: ");
-        double price = scanner.nextDouble();
+
+        double price = ConsoleUtils.getDoubleInput(scanner,0.0);
 
         Product newProduct = new Product(productName, price);
         productRepository.save(newProduct);
@@ -63,6 +99,8 @@ public class ProductUI {
         Optional<Product> productOptional = productRepository.getById(productId);
         if(productOptional.isPresent()) {
             // TODO: logika update
+            Product productToUpdate = (Product) productOptional;
+            showEditMenu(productToUpdate);
         } else {
             System.err.println("Nie istnieje produkt o takim id!");
         }

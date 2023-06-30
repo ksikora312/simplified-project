@@ -15,8 +15,26 @@ public class ProductRepository {
      * Poczytać o wzorcu projektowym Singleton i zastanoawić się w jaki sposób go wprowadzić do naszych repozytoriów
      * Jak się uda, to wprowadzić
      */
+    private static volatile ProductRepository instance = null;
 
-    public ProductRepository() {
+    private ProductRepository() {
+        if(instance != null) {
+            throw new RuntimeException("Not allowed. Please use getInstance() method");
+        }
+    }
+    public static ProductRepository getInstance() {
+        if(instance == null) {
+            synchronized(ProductRepository.class) {
+                if(instance == null) {
+                    instance = new ProductRepository();
+                }
+            }
+        }
+
+        return instance;
+    }
+
+    private ProductRepository() {
         this.products = new ArrayList<>();
     }
 
