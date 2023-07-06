@@ -1,6 +1,9 @@
 package pl.zajecia;
 
-import pl.zajecia.ui.*;
+import pl.zajecia.ui.ConsoleUtils;
+import pl.zajecia.ui.CustomerUI;
+import pl.zajecia.ui.OrderUI;
+import pl.zajecia.ui.ProductUI;
 
 import java.util.Scanner;
 
@@ -8,9 +11,9 @@ public class OnlineShop {
 
     private Scanner scanner;
 
-    private CustomerUI customerUI;
-    private ProductUI productUI;
-    private OrderUI orderUI;
+    private final CustomerUI customerUI;
+    private final ProductUI productUI;
+    private final OrderUI orderUI;
 
     private boolean isApplicationRunning;
 
@@ -23,7 +26,7 @@ public class OnlineShop {
     }
 
     public void run() {
-        while(isApplicationRunning) {
+        while (isApplicationRunning) {
             System.out.println("1) Klienci");
             System.out.println("2) Produkty");
             System.out.println("3) Zamowienia");
@@ -47,7 +50,6 @@ public class OnlineShop {
             }
         }
     }
-
 
 
 }

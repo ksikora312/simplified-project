@@ -13,7 +13,6 @@ public class AddressRepository {
 
     private static AddressRepository instance;
 
-    // DONE: TODO: Zmienić w pozostałych klasach możliwe pola na final
     private final List<Address> addresses = new ArrayList<>();
 
     public static AddressRepository getInstance() {
@@ -22,7 +21,6 @@ public class AddressRepository {
         }
         return instance;
     }
-
 
     public void save(Address address) {
         addresses.add(address);
@@ -36,7 +34,7 @@ public class AddressRepository {
         return addresses;
     }
 
-    public List<Address> getAddressesByCustomerId(String customerId) {
+    public List<Address> findAddressesByCustomerId(String customerId) {
         return addresses.stream()
                 .filter(address -> address.getCustomer().getIdCustomer().equals(customerId))
                 .collect(Collectors.toList());

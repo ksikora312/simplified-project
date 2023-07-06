@@ -5,8 +5,10 @@ import pl.zajecia.repository.OrderRepository;
 import java.util.Scanner;
 
 public class OrderUI {
-    private Scanner scanner;
-    private OrderRepository orderRepository;
+
+    private final Scanner scanner;
+    private final OrderRepository orderRepository;
+
     private boolean keepShowingOrderUI;
 
     public OrderUI(Scanner scanner) {
@@ -17,7 +19,7 @@ public class OrderUI {
     public void showMenu() {
         this.keepShowingOrderUI = true;
         while (keepShowingOrderUI) {
-            showMenu();
+            printMenu();
             int choice = ConsoleUtils.getIntInput(scanner, 1, 5);
             handleUserChoice(choice);
         }

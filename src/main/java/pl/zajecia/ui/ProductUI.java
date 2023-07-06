@@ -9,14 +9,14 @@ import java.util.Scanner;
 
 public class ProductUI {
 
-    private Scanner scanner;
-    private ProductRepository productRepository;
+    private final Scanner scanner;
+    private final ProductRepository productRepository;
 
     private boolean keepShowingProductUI;
 
     public ProductUI(Scanner scanner) {
         this.scanner = scanner;
-        this.productRepository = productRepository.getInstance();
+        this.productRepository = ProductRepository.getInstance();
     }
 
     public void showMenu() {
@@ -54,19 +54,16 @@ public class ProductUI {
     }
 
     private void showEditMenu(Product product) {
-        printEditMenu(product);
-        int choice = ConsoleUtils.getIntInput(scanner, 1, 3);
-        handleEditMenuUserChoice(product, choice);
-
-    }
-
-    private void printEditMenu(Product product) {
         System.out.println("1) Zmien nazwe produktu, aktualna nazwa to : " + product.getName());
         System.out.println("2) Zmien cene produktu, aktualna cena wynosi : " + product.getPrice());
         System.out.println("3) Wroc do menu produktow");
+
+        int choice = ConsoleUtils.getIntInput(scanner, 1, 3);
+        handleEditMenuUserChoice(product, choice);
     }
 
     private void handleEditMenuUserChoice(Product product, int choice) {
+        // TODO: update whole product at once + services and DTOs
         switch (choice) {
             case 1:
                 System.out.println("Podaj nowa nazwe");
@@ -85,6 +82,7 @@ public class ProductUI {
                 break;
         }
     }
+
     private void showAllProducts() {
         List<Product> allProducts = productRepository.getAllProducts();
         for (Product product : allProducts) {

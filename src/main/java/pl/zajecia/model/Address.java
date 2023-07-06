@@ -10,17 +10,11 @@ import java.util.UUID;
 public class Address {
 
     private String idAddress;
-    //private String idCustomer;
-    // DONE: TODO: consider?
     private Customer customer;
     private String city;
     private String street;
     private int houseNumber;
     private AddressType addressType;
-
-
-
-
 
     public Address() {
         this.idAddress = UUID.randomUUID().toString();

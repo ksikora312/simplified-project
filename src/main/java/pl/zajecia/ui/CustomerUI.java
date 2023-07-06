@@ -1,28 +1,29 @@
 package pl.zajecia.ui;
 
+import pl.zajecia.dto.CreateAddressDto;
 import pl.zajecia.model.Address;
 import pl.zajecia.model.AddressType;
 import pl.zajecia.model.Customer;
 import pl.zajecia.repository.AddressRepository;
 import pl.zajecia.repository.CustomerRepository;
+import pl.zajecia.service.AddressService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class CustomerUI {
 
-    private Scanner scanner;
-    private CustomerRepository customerRepository;
-    private AddressRepository addressRepository;
+    private final Scanner scanner;
+    private final CustomerRepository customerRepository;
+    private final AddressService addressService;
 
     private boolean keepShowingCustomerUI;
 
     public CustomerUI(Scanner scanner) {
-        // DONE: TODO: przerobić pozostałe klasy, aby przyjmowały scanner z zewnątrz
         this.scanner = scanner;
         this.customerRepository = CustomerRepository.getInstance();
-        this.addressRepository = AddressRepository.getInstance();
+        // TODO: wstrzykiwać w konstruktorze address service (tak jak scanner)
+        this.addressService = new AddressService(AddressRepository.getInstance(), CustomerRepository.getInstance());
     }
 
     public void showMenu() {
@@ -54,8 +55,8 @@ public class CustomerUI {
                 Customer customer = addCustomer();
                 boolean assignNextAddress = true;
                 while (assignNextAddress) {
-                    assignAddressToCustomer(customer, assignNextAddress);
-                    assignNextAddress = assignNextAddress();
+                    assignAddressToCustomer(customer);
+                    assignNextAddress = shouldAssignNextAddress();
                 }
                 break;
             case 3:
@@ -76,27 +77,34 @@ public class CustomerUI {
             System.out.println("Customer Id: " + customer.getIdCustomer() + " Customer name: " + customer.getName());
             System.out.println("Addresses");
 
-            List<Address> customerAddresses = addressRepository.getAddressesByCustomerId(customer.getIdCustomer());
+            List<Address> customerAddresses = addressRepository.findAddressesByCustomerId(customer.getIdCustomer());
             for (Address address : customerAddresses) {
-                System.out.println("- " + address.getStreet() + ", " + address.getCity());
+                System.out.println("- " + address.getStreet() + ", " + address.getCity() + ", type: " + address.getAddressType());
             }
-        };
+        }
+        ;
     }
 
     private Customer addCustomer() {
-        // TODO: zastanów się nad możliwośćią przeniesienia wyświetlania na ekran do innej klasy (może ConsoleUtils?)
         System.out.print("Podaj nazwę klienta: ");
         String customerName = scanner.next();
         Customer newCustomer = new Customer(customerName);
         customerRepository.save(newCustomer);
         return newCustomer;
-        // TODO: rozważ zwrócenie customera i następnie jakieś operacje na nim (może dodanie kolejnego adresu?)
-
     }
 
-    private void assignAddressToCustomer(Customer customer, boolean assignNextAddress) {
-        //boolean assignNextAddress = true;
-        while (assignNextAddress) {
+    private void assignAddressToCustomer(Customer customer) {
+        CreateAddressDto createAddressDto = getCreateAddressDtoFromUser(customer);
+
+        boolean saved = addressService.save(createAddressDto);
+        if (saved) {
+            System.out.println("Pomyslnie dodano adres");
+        } else {
+            System.out.println("Nie udalo sie dodac adresu");
+        }
+    }
+
+    private CreateAddressDto getCreateAddressDtoFromUser(Customer customer) {
         System.out.print("Podaj adress klienta - miasto: ");
         String customerCity = scanner.next();
 
@@ -110,35 +118,22 @@ public class CustomerUI {
         System.out.println("1) Adres glowny");
         System.out.println("2) Adres dodatkowy");
         int inputAddressType = ConsoleUtils.getIntInput(scanner, 1, 2);
-        Address newAddress = new Address();
-        newAddress.setCustomer(customer);
-        newAddress.setCity(customerCity);
-        newAddress.setStreet(customerStreet);
-        newAddress.setHouseNumber(customerHouseNumber);
 
-        switch (inputAddressType) {
-            case 1:
-                newAddress.setAddressType(AddressType.PRIMARY);
-                break;
-            case 2:
-                newAddress.setAddressType(AddressType.SECONDARY);
-                break;
-        }
-        addressRepository.save(newAddress);
-        assignNextAddress = assignNextAddress();
-        }
-
-
+        CreateAddressDto createAddressDto = new CreateAddressDto();
+        createAddressDto.setCustomerId(customer.getIdCustomer());
+        createAddressDto.setCity(customerCity);
+        createAddressDto.setStreet(customerStreet);
+        createAddressDto.setHouseNumber(customerHouseNumber);
+        createAddressDto.setAddressType(inputAddressType == 1 ? AddressType.PRIMARY : AddressType.SECONDARY);
+        return createAddressDto;
     }
 
-    private boolean assignNextAddress () {
+    private boolean shouldAssignNextAddress() {
         System.out.println("Dodać następny adres?");
         System.out.println("1) tak");
         System.out.println("2) nie");
         int inputNextAddress = ConsoleUtils.getIntInput(scanner, 1, 2);
-        if (inputNextAddress==1) {
-            return true;
-        } else return false;
+        return inputNextAddress == 1;
     }
 
 }
