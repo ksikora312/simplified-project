@@ -9,32 +9,37 @@ import java.util.UUID;
 @Setter
 public class Address {
 
-    private String id;
+    private String idAddress;
+    //private String idCustomer;
+    // DONE: TODO: consider?
+    private Customer customer;
     private String city;
     private String street;
     private int houseNumber;
     private AddressType addressType;
 
-    // TODO: consider?
-//    private Customer customer;
+
+
 
 
     public Address() {
-        this.id = UUID.randomUUID().toString();
+        this.idAddress = UUID.randomUUID().toString();
     }
 
-    public Address(String city, String street, int houseNumber) {
-        this.id = UUID.randomUUID().toString();
+    public Address(Customer customer, String city, String street, int houseNumber, AddressType addressType) {
+        super();
+        this.customer = customer;
         this.city = city;
         this.street = street;
         this.houseNumber = houseNumber;
+        this.addressType = addressType;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object instanceof Address) {
             Address addressToCompare = (Address) object;
-            return addressToCompare.getId().equals(this.getId());
+            return addressToCompare.getIdAddress().equals(this.getIdAddress());
         }
         return false;
     }

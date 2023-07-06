@@ -17,8 +17,8 @@ public class OnlineShop {
     public OnlineShop() {
         this.scanner = new Scanner(System.in);
         this.customerUI = new CustomerUI(scanner);
-        this.productUI = new ProductUI();
-        this.orderUI = new OrderUI();
+        this.productUI = new ProductUI(scanner);
+        this.orderUI = new OrderUI(scanner);
         this.isApplicationRunning = true;
     }
 

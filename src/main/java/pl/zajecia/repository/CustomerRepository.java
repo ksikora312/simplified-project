@@ -2,11 +2,14 @@ package pl.zajecia.repository;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import pl.zajecia.model.Address;
 import pl.zajecia.model.Customer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomerRepository {
@@ -31,7 +34,13 @@ public class CustomerRepository {
     }
 
     public Optional<Customer> getById(String customerId) {
-        return customers.stream().filter(customer -> customer.getId().equals(customerId)).findAny();
+        Optional<Customer> optionalCustomer = customers.stream().filter(customer -> customer.getIdCustomer().equals(customerId)).findAny();
+        optionalCustomer.ifPresent(customer -> {
+            AddressRepository addressRepository = AddressRepository.getInstance();
+            List<Address> customerAddresses = addressRepository.getAddressesByCustomerId(customerId);
+        });
+        return optionalCustomer;
+
     }
 
     public List<Customer> getAllCustomers() {

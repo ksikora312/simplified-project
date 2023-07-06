@@ -3,33 +3,26 @@ package pl.zajecia.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
 public class Customer {
 
-    private String id;
+    private String idCustomer;
     private String name;
-    private List<Address> customerAddresses;
+//TODO: nie wiem jak rozwiązań pozostawianie listy adresów przy kliencie/w jaki sposób wypełniać tę listę    private List<Address> addresses;
     private List<Order> orders;
 
     public Customer() {
-        this.id = UUID.randomUUID().toString();
-        this.customerAddresses = new ArrayList<>();
+        this.idCustomer = UUID.randomUUID().toString();
+ //       this.addresses = new ArrayList<>();
         this.orders = new ArrayList<>();
     }
 
     public Customer(String name) {
         this();
         this.name = name;
-    }
-
-    public void addAddress(Address address) {
-        this.customerAddresses.add(address);
     }
 
     @Override
@@ -39,7 +32,7 @@ public class Customer {
         }
         if (object instanceof Customer) {
             Customer customerToCompare = (Customer) object;
-            return customerToCompare.getId().equals(this.getId());
+            return customerToCompare.getIdCustomer().equals(this.getIdCustomer());
         }
         return false;
     }

@@ -7,21 +7,31 @@ import java.util.Scanner;
 public class OrderUI {
     private Scanner scanner;
     private OrderRepository orderRepository;
+    private boolean keepShowingOrderUI;
 
-    public OrderUI() {
-        this.scanner = new Scanner(System.in);
-        this.orderRepository = new OrderRepository();
+    public OrderUI(Scanner scanner) {
+        this.scanner = scanner;
+        this.orderRepository = OrderRepository.getInstance();
     }
 
     public void showMenu() {
+        this.keepShowingOrderUI = true;
+        while (keepShowingOrderUI) {
+            showMenu();
+            int choice = ConsoleUtils.getIntInput(scanner, 1, 5);
+            handleUserChoice(choice);
+        }
+    }
+
+    private void printMenu() {
         System.out.println("1) Wyswietl wszystkie zamowienia");
         System.out.println("2) Dodaj zamowienie");
         System.out.println("3) Edytuj zamowienie");
         System.out.println("4) Usun zamowienie");
         System.out.println("5) Wroc");
+    }
 
-        int choice = ConsoleUtils.getIntInput(scanner, 1, 5);
-
+    private void handleUserChoice(int choice) {
         switch (choice) {
             case 1:
                 break;
@@ -34,6 +44,5 @@ public class OrderUI {
             default:
                 break;
         }
-
     }
 }

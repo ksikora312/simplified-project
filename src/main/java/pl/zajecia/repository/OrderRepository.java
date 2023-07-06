@@ -1,16 +1,24 @@
 package pl.zajecia.repository;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import pl.zajecia.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderRepository {
 
-    private List<Order> orders;
+    private static OrderRepository instance;
 
-    public OrderRepository() {
-        this.orders = new ArrayList<>();
+    private final List<Order> orders = new ArrayList<>();
+
+    public static OrderRepository getInstance() {
+        if (instance == null) {
+            instance = new OrderRepository();
+        }
+        return instance;
     }
 
     public void save(Order order) {
@@ -20,5 +28,7 @@ public class OrderRepository {
     public void delete(Order order) {
         orders.remove(order);
     }
+
+    public List<Order> getAllOrders () {return orders;}
 }
 
